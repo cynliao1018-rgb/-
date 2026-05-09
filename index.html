@@ -2,150 +2,244 @@
 <html lang="zh-TW">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>釜산 미학 여행 4D3N</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🇰🇷 釜山美學之旅</title>
     <style>
         :root {
-            --bg-color: #F8F9FA;
-            --text-main: #333333;
-            --text-muted: #888888;
-            --accent: #A3B18A;
-            --card-bg: #FFFFFF;
-            --border-color: #E9ECEF;
+            --primary-color: #a8dadc;
+            --secondary-color: #457b9d;
+            --accent-color: #e63946;
+            --bg-color: #f1faee;
+            --card-bg: #ffffff;
+            --text-color: #1d3557;
         }
 
-        * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
-        body { margin: 0; font-family: "PingFang TC", "Microsoft JhengHei", sans-serif; background: var(--bg-color); color: var(--text-main); }
-        
-        .app-container { max-width: 500px; margin: 0 auto; height: 100vh; display: flex; flex-direction: column; background: var(--bg-color); position: relative; }
-        header { padding: 20px; background: #fff; text-align: center; border-bottom: 1px solid var(--border-color); }
-        header h1 { font-size: 1.2rem; font-weight: 500; margin: 0; letter-spacing: 2px; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            margin: 0;
+            padding: 0;
+            line-height: 1.6;
+        }
 
-        .nav-tabs { display: flex; background: #fff; border-bottom: 1px solid var(--border-color); justify-content: space-around; padding: 10px 0; }
-        .tab-btn { border: none; background: none; color: var(--text-muted); font-size: 0.9rem; padding: 5px 10px; cursor: pointer; transition: 0.3s; }
-        .tab-btn.active { color: var(--text-main); font-weight: 700; border-bottom: 2px solid var(--text-main); }
+        header {
+            background-color: var(--secondary-color);
+            color: white;
+            padding: 20px 15px;
+            text-align: center;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
 
-        .content-view { flex: 1; overflow-y: auto; padding: 15px; padding-bottom: 80px; }
-        .section { display: none; animation: fadeIn 0.3s ease; }
-        .section.active { display: block; }
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+        /* 導覽分頁 */
+        .tabs {
+            display: flex;
+            background: white;
+            position: sticky;
+            top: 75px;
+            z-index: 999;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+        }
 
-        /* 行程卡片 */
-        .day-group { margin-bottom: 30px; }
-        .day-title { font-size: 1.1rem; font-weight: 700; margin-bottom: 15px; border-left: 4px solid var(--accent); padding-left: 10px; }
-        .itinerary-list { list-style: none; padding: 0; }
-        .itinerary-item { background: var(--card-bg); border-radius: 12px; padding: 15px; margin-bottom: 10px; box-shadow: 0 2px 8px rgba(0,0,0,0.05); cursor: move; border: 1px solid transparent; }
-        .itinerary-item.dragging { opacity: 0.5; border: 1px dashed var(--accent); }
-        .item-time { font-size: 0.8rem; color: var(--accent); font-weight: 700; margin-bottom: 5px; }
-        .item-title { font-size: 1rem; font-weight: 600; margin-bottom: 8px; }
-        .item-addr { font-size: 0.75rem; color: var(--text-muted); margin-bottom: 10px; background: #f1f3f5; padding: 5px 8px; border-radius: 4px; display: block; word-break: break-all; }
-        .btn-group { display: flex; gap: 8px; }
-        .action-btn { flex: 1; padding: 8px; border-radius: 6px; border: 1px solid var(--border-color); font-size: 0.75rem; background: #fff; cursor: pointer; text-decoration: none; color: var(--text-main); text-align: center; }
+        .tab {
+            flex: 1;
+            padding: 12px;
+            text-align: center;
+            cursor: pointer;
+            border-bottom: 3px solid transparent;
+            font-weight: bold;
+            font-size: 0.9rem;
+        }
 
-        /* 工具樣式 */
-        .weather-card { background: linear-gradient(135deg, #A3B18A, #588157); color: #fff; padding: 20px; border-radius: 15px; margin-bottom: 15px; }
-        .calc-group { background: #fff; padding: 20px; border-radius: 15px; border: 1px solid var(--border-color); }
-        .input-row { margin-bottom: 15px; }
-        label { display: block; font-size: 0.8rem; color: var(--text-muted); margin-bottom: 5px; }
-        input { width: 100%; padding: 12px; border-radius: 8px; border: 1px solid var(--border-color); font-size: 1rem; }
+        .tab.active {
+            border-bottom: 3px solid var(--accent-color);
+            color: var(--accent-color);
+        }
 
-        /* 記帳樣式 */
-        .bill-form { background: #fff; padding: 15px; border-radius: 12px; margin-bottom: 15px; }
-        .bill-list { margin-top: 15px; }
-        .bill-item { display: flex; justify-content: space-between; padding: 10px 0; border-bottom: 1px solid var(--border-color); font-size: 0.9rem; }
-        .total-box { background: var(--text-main); color: #fff; padding: 20px; border-radius: 12px; margin-top: 20px; }
+        .content-section {
+            display: none;
+            padding: 15px;
+        }
 
-        .toast { position: fixed; bottom: 100px; left: 50%; transform: translateX(-50%); background: rgba(0,0,0,0.7); color: #fff; padding: 8px 20px; border-radius: 20px; font-size: 0.8rem; display: none; z-index: 1000; }
+        .content-section.active {
+            display: block;
+        }
+
+        /* 卡片樣式 */
+        .card {
+            background: var(--card-bg);
+            border-radius: 12px;
+            padding: 15px;
+            margin-bottom: 15px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+        }
+
+        .day-title {
+            background: var(--primary-color);
+            padding: 5px 15px;
+            border-radius: 20px;
+            display: inline-block;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+
+        .item {
+            margin-bottom: 15px;
+            border-left: 3px solid var(--primary-color);
+            padding-left: 10px;
+        }
+
+        .time {
+            font-weight: bold;
+            color: var(--secondary-color);
+            font-size: 0.9rem;
+        }
+
+        .location-name {
+            font-size: 1.1rem;
+            font-weight: bold;
+            margin: 3px 0;
+        }
+
+        .address {
+            font-size: 0.85rem;
+            color: #666;
+            background: #f9f9f9;
+            padding: 8px;
+            border-radius: 5px;
+            margin-top: 5px;
+            word-break: break-all;
+        }
+
+        /* 按鈕樣式 */
+        .btn-group {
+            display: flex;
+            gap: 10px;
+            margin-top: 10px;
+        }
+
+        .btn {
+            flex: 1;
+            padding: 8px;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 0.85rem;
+            font-weight: bold;
+            text-align: center;
+            text-decoration: none;
+        }
+
+        .btn-copy { background-color: #eee; color: #333; }
+        .btn-map { background-color: #03C75A; color: white; } /* Naver Green */
+
+        /* 匯率計算器 */
+        .converter-grid {
+            display: grid;
+            gap: 15px;
+        }
+
+        .input-group {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .input-group label {
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+
+        input {
+            padding: 12px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            font-size: 1.1rem;
+        }
+
+        /* 航班資訊 */
+        .flight-info {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px dashed #ccc;
+            padding-bottom: 10px;
+            margin-bottom: 10px;
+        }
+
+        .copy-toast {
+            position: fixed;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(0,0,0,0.7);
+            color: white;
+            padding: 10px 20px;
+            border-radius: 20px;
+            display: none;
+            z-index: 2000;
+        }
     </style>
 </head>
 <body>
 
-<div class="app-container">
-    <header>
-        <h1>釜山美學之旅 4D3N</h1>
-    </header>
+<header>
+    <h2 style="margin:0">🇰🇷 釜山美學之旅</h2>
+</header>
 
-    <div class="nav-tabs">
-        <button class="tab-btn active" onclick="switchTab('itinerary', this)">行程</button>
-        <button class="tab-btn" onclick="switchTab('weather', this)">天氣</button>
-        <button class="tab-btn" onclick="switchTab('currency', this)">匯率</button>
-        <button class="tab-btn" onclick="switchTab('billing', this)">記帳</button>
+<div class="tabs">
+    <div class="tab active" onclick="showTab('itinerary', this)">行程表</div>
+    <div class="tab" onclick="showTab('info', this)">航班住宿</div>
+    <div class="tab" onclick="showTab('currency', this)">匯率換算</div>
+</div>
+
+<div id="copyToast" class="copy-toast">已複製地址！</div>
+
+<div id="itinerary" class="content-section active">
+    
+    <div class="day-title">Day 1：5/14 (週四)</div>
+    <div class="card">
+        <div class="item">
+            <div class="time">15:30 - 17:30</div>
+            <div class="location-name">UH Suite Haeundae</div>
+            <div class="address" id="addr1">부산 해운대구 해운대해변로 271</div>
+            <div class="btn-group">
+                <button class="btn btn-copy" onclick="copyText('addr1')">複製地址</button>
+                <a href="https://map.naver.com/v5/search/부산 해운대구 해운대해변로 271" target="_blank" class="btn btn-map">Naver Map</a>
+            </div>
+        </div>
+        <div class="item">
+            <div class="time">17:30 - 19:30</div>
+            <div class="location-name">Spa Land 汗蒸幕</div>
+            <div class="address" id="addr2">부산 해운대구 센텀남대로 35</div>
+            <div class="btn-group">
+                <button class="btn btn-copy" onclick="copyText('addr2')">複製地址</button>
+                <a href="https://map.naver.com/v5/search/부산 해운대구 센텀남대로 35" target="_blank" class="btn btn-map">Naver Map</a>
+            </div>
+        </div>
+        <div class="item">
+            <div class="time">21:30 - 宵夜</div>
+            <div class="location-name">海雲台傳統市場</div>
+            <div class="address" id="addr3">부산 해운대구 구남로41번길 22-1</div>
+            <div class="btn-group">
+                <button class="btn btn-copy" onclick="copyText('addr3')">複製地址</button>
+                <a href="https://map.naver.com/v5/search/부산 해운대구 구남로41번길 22-1" target="_blank" class="btn btn-map">Naver Map</a>
+            </div>
+        </div>
     </div>
 
-    <div class="content-view">
-        <div id="itinerary" class="section active">
-            <div id="itinerary-container">
-                <div class="day-group">
-                    <div class="day-title">Day 1：抵達與海雲台 (5/14)</div>
-                    <div class="itinerary-list" ondrop="drop(event)" ondragover="allowDrop(event)">
-                        <div class="itinerary-item" draggable="true" ondragstart="drag(event)">
-                            <div class="item-time">15:30 - 17:30</div>
-                            <div class="item-title">金海機場 ➔ 海雲台飯店 (UH Suite)</div>
-                            <code class="item-addr">부산 해운대구 해운대해변로 271</code>
-                            <div class="btn-group">
-                                <a href="https://map.naver.com/v5/search/부산 해운대구 해운대해변로 271" target="_blank" class="action-btn">Naver Map</a>
-                                <button class="action-btn" onclick="copyText('부산 해운대구 해운대해변로 271')">複製地址</button>
-                            </div>
-                        </div>
-                        <div class="itinerary-item" draggable="true" ondragstart="drag(event)">
-                            <div class="item-time">17:30 - 19:30</div>
-                            <div class="item-title">Spa Land 汗蒸幕</div>
-                            <code class="item-addr">부산 해운대구 센텀남대로 35</code>
-                            <div class="btn-group">
-                                <a href="https://map.naver.com/v5/search/부산 해운대구 센텀남대로 35" target="_blank" class="action-btn">Naver Map</a>
-                                <button class="action-btn" onclick="copyText('부산 해운대구 센텀남대로 35')">複製地址</button>
-                            </div>
-                        </div>
-                        <div class="itinerary-item" draggable="true" ondragstart="drag(event)">
-                            <div class="item-time">21:30 之後</div>
-                            <div class="item-title">宵夜：海雲台傳統市場</div>
-                            <code class="item-addr">부산 해운대구 구남로41번길 22-1</code>
-                            <div class="btn-group">
-                                <a href="https://map.naver.com/v5/search/부산 해운대구 구남로41번길 22-1" target="_blank" class="action-btn">Naver Map</a>
-                                <button class="action-btn" onclick="copyText('부산 해운대구 구남로41번길 22-1')">複製地址</button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="day-group">
-                    <div class="day-title">Day 2：文化取材與烤肉 (5/15)</div>
-                    <div class="itinerary-list" ondrop="drop(event)" ondragover="allowDrop(event)">
-                        <div class="itinerary-item" draggable="true" ondragstart="drag(event)">
-                            <div class="item-time">10:30</div>
-                            <div class="item-title">甘川文化村</div>
-                            <code class="item-addr">부산 사하구 감내1로 200</code>
-                            <div class="btn-group">
-                                <a href="https://map.naver.com/v5/search/부산 사하구 감내1로 200" target="_blank" class="action-btn">Naver Map</a>
-                                <button class="action-btn" onclick="copyText('부산 사하구 감내1로 200')">複製地址</button>
-                            </div>
-                        </div>
-                        <div class="itinerary-item" draggable="true" ondragstart="drag(event)">
-                            <div class="item-time">14:00</div>
-                            <div class="item-title">Thrill on the Mug 海景咖啡</div>
-                            <code class="item-addr">부산 영도구 해양힐링로 55</code>
-                            <div class="btn-group">
-                                <a href="https://map.naver.com/v5/search/부산 영도구 해양힐링로 55" target="_blank" class="action-btn">Naver Map</a>
-                                <button class="action-btn" onclick="copyText('부산 영도구 해양힐링로 55')">複製地址</button>
-                            </div>
-                        </div>
-                        <div class="itinerary-item" draggable="true" ondragstart="drag(event)">
-                            <div class="item-time">19:00</div>
-                            <div class="item-title">烤肉的男子 (南浦店)</div>
-                            <code class="item-addr">부산 중구 비프광장로 18</code>
-                            <div class="btn-group">
-                                <a href="https://map.naver.com/v5/search/부산 중구 비프광장로 18" target="_blank" class="action-btn">Naver Map</a>
-                                <button class="action-btn" onclick="copyText('부산 중구 비프광장로 18')">複製地址</button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="day-group">
-                    <div class="day-title">Day 3 & 4 重點行程</div>
-                    <div class="itinerary-list" ondrop="drop(event)" ondragover="allowDrop(event)">
-                        <div class="itinerary-item" draggable="true" ondragstart="drag(event)">
-                            <div class="item-time">11:00 (D3)</div>
-                            <div class="item-title">D Day 醫美 (西面)</div>
-                         
+    <div class="day-title">Day 2：5/15 (週五)</div>
+    <div class="card">
+        <div class="item">
+            <div class="time">10:30</div>
+            <div class="location-name">甘川文化村</div>
+            <div class="address" id="addr4">부산 사하구 감내2로 203</div>
+            <div class="btn-group">
+                <button class="btn btn-copy" onclick="copyText('addr4')">複製地址</button>
+                <a href="https://map.naver.com/v5/search/부산 사하구 감내2로 203" target="_blank" class="btn btn-map">Naver Map</a>
+            </div>
+        </div>
+        <div class="item">
+            <div class="time">12:
